@@ -73,6 +73,7 @@ void sendRequest(int clientSocket) {
         error("Error, failed to write to socket");
     }
     printf("Request sent to server\n");
+    free(filename);
 }
 
 int main(int argc, char *argv[]) {

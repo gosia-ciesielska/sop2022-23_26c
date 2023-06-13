@@ -60,6 +60,8 @@ void printLog(char* message, ...) {
     fwrite(formattedLog, logLength, sizeof(char), filePtr); /*writes log to file, closes file, and prints log to console*/
     fclose(filePtr);
     printf("%s", formattedLog);
+    free(formattedLog);
+    free(formattedMessage);
 }
 
 void handleSignal(int sigId) {
@@ -145,6 +147,7 @@ void sendEmptyResponse(int clientSocket, int statusCode){
     if(write(clientSocket, responseBuffer, responseSize) < 0) {
         error("Error, failed to write to socket");
     }
+    free(responseBuffer);
 }
 
 void sendFileResponse(int clientSocket, char* filePath){
@@ -185,6 +188,7 @@ void sendFileResponse(int clientSocket, char* filePath){
         bytesToWrite = 0;
     }
     fclose(filePtr);
+    free(responseBuffer);
 }
 
 /*processes raw data and sends back response accordingly*/
@@ -236,5 +240,6 @@ int main(int argc, char *argv[]) {
     clientSocket = listenForClients(serverSocket);
     requestData = readRequest(clientSocket);
     processRequest(clientSocket, requestData);
+    free(requestData);
     return 0;
 }
